@@ -27,7 +27,6 @@ const loadFile = async function (files) {
             console.log("El fitxer té un format correcte");
             const fitxer = await readCsv(file);
             loadData(fitxer);
-            getInfoCountry();
             console.log(fitxer);
         } else {
             alert("El fitxer no té un format csv");
@@ -83,6 +82,8 @@ const loadData = function (fitxer) {
         }
 
         tipusSelected.add(dades[TIPUS]);
+
+        getInfoCountry(dades[CODI], dades[CIUTAT]);
     });
 
     tipusSelected.forEach((tipus) => {
@@ -129,17 +130,25 @@ const renderitzaLlista = function (llista) {
     });
 };
 
-const getInfoCountry = async function (bandera) {
+
+const getInfoCountry = async function (bandera, ciutat) {
     try {
         const resposta = await fetch(`https://restcountries.com/v3.1/alpha/${bandera}`);
 
         if (!resposta.ok) {
-            throw new Error(Error `${resposta.status}`);
+            throw new Error(`Error ${resposta.status}`);
         }
 
         const dades = await resposta.json();
-        const bandera = dades[0].flags.png;
-        return bandera;
+        const banderaUrl = dades[0].flags.png; 
+        
+
+        const imgBandera = document.getElementById('bandera');
+        imgBandera.src = banderaUrl;
+        const spanCiutat = document.getElementById('ciutat');
+        spanCiutat.textContent = ciutat;
+
+        return banderaUrl; 
     } catch (error) {
         console.error("Error", error);
     }
