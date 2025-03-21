@@ -29,28 +29,32 @@
     <div class="main-container">
         <!-- Part de la esquerre -->
         <div class="menu-main">
-            <div>
+            <div class="banderaCiutat">
                 <img id="bandera" src="" alt="Bandera del país" style="width: 20px; height: auto;">
                 <span id="ciutat"></span>
             </div>    
-            <label for="ordenacio">Ordenació:</label>
-            <select name="ordenacio">
-                <option value="ascendent">Ascendent</option>
-                <option value="descendent">Descendent</option>  
-              </select>
+            <div class="tot">
+                <label for="ordenacio">Ordenació:</label>
+                <select name="ordenacio">
+                    <option value="ascendent">Ascendent</option>
+                    <option value="descendent">Descendent</option>  
+                </select>
 
-            <label for="tipus">Tipus:</label>
-            <select name="tipus" id="tipus">
-                <option value="tots">Tots</option>
-            </select>
-            <input type="text" id="filtrar" placeholder="Filtrar per nom...">
-            <div class="llistat_llocs">
-                No hi ha informació a mostrar
+                <label for="tipus">Tipus:</label>
+                <select name="tipus" id="tipus">
+                    <option value="tots">Tots</option>
+                </select>
+                <input type="text" id="filtrar" placeholder="Filtrar per nom...">
+                <div class="llistat_llocs" id="llocs">
+                    No hi ha informació a mostrar
+                </div>
+                <div id="numeroTotal"></div>
+                <button id="netejar">Netejar tot</button>
+
+                
+                <!-- Container per arrosegar fitxers-->
+                <div class="dropZone"> Arrosega aqui el teu csv </div>
             </div>
-            <p>Número total:</p><button>Netejar tot</button>
-            
-            <!-- Container per arrosegar fitxers-->
-            <div class="dropZone"> Arrosega aqui el teu csv </div>
         </div>
 
         <div id="map"></div>

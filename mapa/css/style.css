@@ -9,12 +9,14 @@
     width: 30%; 
     padding: 20px;
     background-color: #f4f4f4;
+    border-radius: 30px;
+
+}
+.tot {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 30px;
-
 }
 
 /* Contenidor del mapa */
@@ -37,4 +39,9 @@
     margin-top: 20px;
     padding: 10px;
 
+}
+
+.banderaCiutat{
+    justify-content: left;
+    display: flex;
 }

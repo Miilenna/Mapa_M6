@@ -3,14 +3,19 @@ let fitxer = [];
 let puntInteres = [];
 let tipusSelected = new Set([]);
 let numId = 0;
-
 const selectTipus = document.getElementById('tipus');
+const llistatDiv = document.getElementById('llocs');
+const netejarButton = document.getElementById('netejar');
+const puntsTotals = document.getElementById("numeroTotal");
 
+
+//-------------------------------------------------------------------------------//
 dropZoneObj.addEventListener("dragover", function (event) {
     event.preventDefault();
     console.log("dragover");
 });
 
+//-------------------------------------------------------------------------------//
 dropZoneObj.addEventListener("drop", function (event) {
     event.preventDefault();
     console.log("drop");
@@ -18,6 +23,7 @@ dropZoneObj.addEventListener("drop", function (event) {
     loadFile(files);
 });
 
+//-------------------------------------------------------------------------------//
 const loadFile = async function (files) {
     if (files && files.length > 0) {
         const file = files[0];
@@ -35,6 +41,7 @@ const loadFile = async function (files) {
     }
 };
 
+//-------------------------------------------------------------------------------//
 const readCsv = function (file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -50,9 +57,9 @@ const readCsv = function (file) {
     });
 };
 
+//-------------------------------------------------------------------------------//
 const loadData = function (fitxer) {
     selectTipus.innerHTML = '<option value="tots">Tots</option>';
-
     fitxer.forEach((liniaCSV) => {
         numId++;
         const dades = liniaCSV.split(CHAR_CSV);
@@ -82,7 +89,6 @@ const loadData = function (fitxer) {
         }
 
         tipusSelected.add(dades[TIPUS]);
-
         getInfoCountry(dades[CODI], dades[CIUTAT]);
     });
 
@@ -95,18 +101,23 @@ const loadData = function (fitxer) {
 
     console.log(puntInteres);
     renderitzaLlista(puntInteres); 
+    contarPunts(puntInteres);
 };
 
+//-------------------------------------------------------------------------------//
 const pintarEspai = function (obj) {
     const pi = document.createElement("div");
 };
 
+//-------------------------------------------------------------------------------//
 const pintarMuseu = function (obj) {
 };
 
+//-------------------------------------------------------------------------------//
 const pintarAtraccio = function (obj) {
 };
 
+//-------------------------------------------------------------------------------//
 const renderitzaLlista = function (llista) {
     llista.forEach((obj) => {
         switch (obj.tipus.toLowerCase()) {
@@ -128,9 +139,10 @@ const renderitzaLlista = function (llista) {
                 });
         }
     });
+    mostrarLlistat(llista);
 };
 
-
+//-------------------------------------------------------------------------------//
 const getInfoCountry = async function (bandera, ciutat) {
     try {
         const resposta = await fetch(`https://restcountries.com/v3.1/alpha/${bandera}`);
@@ -153,5 +165,63 @@ const getInfoCountry = async function (bandera, ciutat) {
         console.error("Error", error);
     }
 };
+//-------------------------------------------------------------------------------//
+function mostrarLlistat(punts) {
+    if (punts.length === 0) {
+        llistatDiv.innerHTML = "No hi ha informació a mostrar";
+    } else {
+        // Crear la lista de puntos de interés
+        llistatDiv.innerHTML = punts.map((punt, index) => {
+            let infoPunt = '';
+            let color = '';
 
+            switch (punt.tipus.toLowerCase()) {  
+                case 'espai':
+                    infoPunt = `
+                        <strong>${punt.nom}</strong> | ${punt.ciutat}<br>
+                        Tipus: ${punt.tipus}
+                    `;
+                    color = 'background-color: #7fffd4; border: 1px solid red;';
+                case 'atraccio':
+                    infoPunt = `
+                        <strong>${punt.nom}</strong> | ${punt.ciutat}<br>
+                        Tipus: ${punt.tipus}<br>
+                        Horaris: ${punt.horaris}<br>
+                        Preu: ${punt.preu} ${punt.moneda}
+                    `;
+                case 'museu':
+                    infoPunt = `
+                        <strong>${punt.nom}</strong> | ${punt.ciutat}<br>
+                        Tipus: ${punt.tipus}<br>
+                        Horaris: ${punt.horaris}<br>
+                        Preu: ${punt.preu} ${punt.moneda}<br>
+                        Descripció: ${punt.descripcio}
+                    `;
+            }
+
+            return `
+                    ${infoPunt}
+                    <button onclick="eliminarPunt(${index})">Eliminar</button>
+            `;
+        }).join('');
+    }
+}
+
+function eliminarPunt(index) {
+    puntInteres.splice(index, 1);
+    mostrarLlistat(puntInteres);
+    contarPunts(puntInteres);
+}
+
+netejarButton.addEventListener('click', () => {
+    puntInteres = []; 
+    mostrarLlistat(puntInteres); 
+    console.log("Todos los puntos de interés han sido eliminados.");
+});
+
+function contarPunts(punts){
+    puntsTotals.innerHTML="Totals: " + punts.length;
+    
+}
+contarPunts(puntInteres);
 const mapa = new Map();
