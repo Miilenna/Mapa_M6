@@ -3,7 +3,8 @@ class Map{
     #map
     #currentLat;
     #currentLong;
-
+    #markers = {};
+    
     constructor(){
         this.#getPosicioActual();
         const mapCenter = [this.#currentLat,this.#currentLong]; // Coordinates for Barcelona, Spain 
@@ -45,12 +46,11 @@ class Map{
        
     }
 
-    borrarPunt(){
-        this.#map.eachLayer(layer => {
-            if (layer instanceof L.Marker) {
-                this.#map.removeLayer(layer);
-            }
-        });
+    borrarPunt(id) {
+        if (this.#markers[id]) {
+            this.#map.removeLayer(this.#markers[id]); // Elimina el marcador específico
+            delete this.#markers[id]; // Elimina del diccionario
+        }
     }
 
 

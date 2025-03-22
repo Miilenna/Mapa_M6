@@ -32,8 +32,8 @@ const loadFile = async function (files) {
             readCsv(file);
             console.log("El fitxer té un format correcte");
             const fitxer = await readCsv(file);
-            loadData(fitxer);
             console.log(fitxer);
+            loadData(fitxer);
         } else {
             alert("El fitxer no té un format csv");
         }
@@ -165,25 +165,36 @@ const renderitzaLlista = function (llista) {
     llista.forEach((obj) => {
         switch (obj.tipus.toLowerCase()) {
             case "espai":
-                pintarEspai(obj);
+                if (typeof pintarEspai === "function") {
+                    pintarEspai(obj);
+                } else {
+                    console.error("Error: La función pintarEspai no está definida.");
+                }
                 break;
 
             case "museu":
-                pintarMuseu(obj);
+                if (typeof pintarMuseu === "function") {
+                    pintarMuseu(obj);
+                } else {
+                    console.error("Error: La función pintarMuseu no está definida.");
+                }
                 break;
-
             case "atraccio":
-                pintarAtraccio(obj);
+                if (typeof pintarAtraccio === "function") {
+                    pintarAtraccio(obj);
+                } else {
+                    console.error("Error: La función pintarAtraccio no está definida.");
+                }
                 break;
 
             default:
-                throw new Error(() => {
-                    alert("Has afegit un tipus que no és correcte");
-                });
+                console.error("Error: Has afegit un tipus que no és correcte", obj);
+                throw new Error("Has afegit un tipus que no és correcte");
         }
     });
     mostrarLlistat(llista);
 };
+
 
 //-------------------------------------------------------------------------------//
 const getInfoCountry = async function (bandera, ciutat) {
@@ -210,6 +221,7 @@ const getInfoCountry = async function (bandera, ciutat) {
 };
 //-------------------------------------------------------------------------------//
 function mostrarLlistat(punts) {
+    
     if (punts.length === 0) {
         llistatDiv.innerHTML = "No hi ha informació a mostrar";
     } else {
@@ -251,6 +263,7 @@ function mostrarLlistat(punts) {
             return `
                 <div style="${color}">
                     ${infoPunt}
+                    <button onclick="eliminarPunt(${punt.id})">Delete</button>
                 </div>
             `;
         }).join('');
@@ -258,15 +271,24 @@ function mostrarLlistat(punts) {
 }
 
 //-------------------------------------------------------------------------------//
-function eliminarPunt(index) {
-    puntInteres.splice(index, 1);
+function eliminarPunt(id) {
+    const confirmacio = confirm("Estàs segur que vols eliminar el punt d'interès?");
+    if (!confirmacio) return;
+
+    const index = puntInteres.findIndex((punt) => punt.id === id);
+    if (index === -1) return;
+
+    const puntEliminat = puntInteres.splice(index, 1)[0];
+    mapa.borrarPunt(puntEliminat.latitud, puntEliminat.longitud); 
     mostrarLlistat(puntInteres);
     contarPunts(puntInteres);
 }
 
+
 //-------------------------------------------------------------------------------//
 netejarButton.addEventListener('click', () => {
     puntInteres = []; 
+    console.log(puntInteres);
     mostrarLlistat(puntInteres); 
     console.log("Todos los puntos de interés han sido eliminados.");
     puntsTotals.innerHTML="Totals: " + 0;
