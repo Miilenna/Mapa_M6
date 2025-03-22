@@ -19,26 +19,38 @@ class Map{
         const marker = L.marker(markerPosition).addTo(this.#map); 
 
         // Step 7: Add a popup to the marker
-        const popupText = "This is a marker in Barcelona!"; 
+        const popupText = "Estas aquí!"; 
         marker.bindPopup(popupText).openPopup(); 
     }
 
 
     mostrarPuntInicial(){
+        if (this.#currentLat && this.#currentLong) {
+            this.mostrarPunt(this.#currentLat, this.#currentLong, "Estás aquí");
+        }
     }
        
 
     actualitzarPosInitMapa(lat,lon){
-       
+        this.#currentLat = lat;
+        this.#currentLong = lon;
     }
 
 
     mostrarPunt(lat,long,desc=""){
+        const marker = L.marker([lat, long]).addTo(this.#map);
+        if (desc) {
+            marker.bindPopup(desc).openPopup();
+        }
        
     }
 
     borrarPunt(){
-
+        this.#map.eachLayer(layer => {
+            if (layer instanceof L.Marker) {
+                this.#map.removeLayer(layer);
+            }
+        });
     }
 
 
@@ -51,7 +63,7 @@ class Map{
             navigator.geolocation.getCurrentPosition(function (position) {
                 lat = position.coords.latitude;
                 lon = position.coords.longitude;
-        
+
                 // Coloca un marcador en la ubicación actual del usuario
                 // L.marker([lat, lon]).addTo(map)
                 //     .bindPopup("Estás aquí").openPopup();

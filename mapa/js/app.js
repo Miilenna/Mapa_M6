@@ -58,33 +58,86 @@ const readCsv = function (file) {
 };
 
 //-------------------------------------------------------------------------------//
+function mostrarPuntsEnMapa(punts) {
+    punts.forEach((punt) => {
+        const descripcio = `
+            <strong>${punt.nom}</strong><br>
+            <strong>${punt.direccio}</strong><br>
+            Puntuació: ${punt.puntuacio}
+        `;
+        mapa.mostrarPunt(punt.latitud, punt.longitud, descripcio);
+    });
+}
+
+//-------------------------------------------------------------------------------//
 const loadData = function (fitxer) {
     selectTipus.innerHTML = '<option value="tots">Tots</option>';
     fitxer.forEach((liniaCSV) => {
         numId++;
         const dades = liniaCSV.split(CHAR_CSV);
-        console.log(dades[TIPUS]);
+        const tipus = dades[TIPUS].toLowerCase(); 
 
-        switch (dades[TIPUS].toLowerCase()) {
+        switch (tipus) {
             case "espai":
                 console.log("Instancia objecte PuntInteres");
-                const espaiObj = new PuntInteres(numId, false, dades[PAIS], dades[CIUTAT], dades[NOM], dades[DIRECCIO], dades[TIPUS],  dades[LAT], dades[LON], dades[HORARIS], dades[PREU], dades[DESCRIPCIO], dades[PUNT], dades[MONEDA]);
+                const espaiObj = new PuntInteres(
+                    numId, 
+                    false, 
+                    dades[PAIS], 
+                    dades[CIUTAT], 
+                    dades[NOM], 
+                    dades[DIRECCIO], 
+                    dades[TIPUS], 
+                    dades[LAT], 
+                    dades[LON], 
+                    dades[PUNTUACIO]  
+                );
                 puntInteres.push(espaiObj);
                 break;
 
             case "museu":
                 console.log("Instancia objecte Museu");
-                const museuObj = new Museu(numId, false, dades[PAIS], dades[CIUTAT], dades[NOM], dades[DIRECCIO], dades[TIPUS],  dades[LAT], dades[LON], dades[HORARIS], dades[PREU], dades[DESCRIPCIO], dades[PUNT], dades[MONEDA]);
+                const museuObj = new Museu(
+                    numId, 
+                    false, 
+                    dades[PAIS], 
+                    dades[CIUTAT], 
+                    dades[NOM], 
+                    dades[DIRECCIO], 
+                    dades[TIPUS], 
+                    dades[LAT], 
+                    dades[LON], 
+                    dades[PUNTUACIO], 
+                    dades[HORARIS], 
+                    dades[PREU], 
+                    dades[MONEDA], 
+                    dades[DESCRIPCIO]
+                );
                 puntInteres.push(museuObj);
                 break;
 
             case "atraccio":
                 console.log("Instancia objecte Atraccio");
-                const atraccioObj = new Atraccio(numId, false, dades[PAIS], dades[CIUTAT], dades[NOM], dades[DIRECCIO], dades[TIPUS],  dades[LAT], dades[LON], dades[HORARIS], dades[PREU], dades[DESCRIPCIO], dades[PUNT], dades[MONEDA]);
+                const atraccioObj = new Atraccio(
+                    numId, 
+                    false, 
+                    dades[PAIS], 
+                    dades[CIUTAT], 
+                    dades[NOM], 
+                    dades[DIRECCIO], 
+                    dades[TIPUS], 
+                    dades[LAT], 
+                    dades[LON], 
+                    dades[PUNTUACIO], 
+                    dades[HORARIS], 
+                    dades[PREU], 
+                    dades[MONEDA]
+                );
                 puntInteres.push(atraccioObj);
                 break;
 
             default:
+                console.error(`Tipus no vàlid: ${tipus}`);
                 throw new Error("Has afegit un tipus que no és correcte");
         }
 
@@ -92,29 +145,19 @@ const loadData = function (fitxer) {
         getInfoCountry(dades[CODI], dades[CIUTAT]);
     });
 
+    mostrarPuntsEnMapa(puntInteres);
+
     tipusSelected.forEach((tipus) => {
         const option = document.createElement('option');
         option.value = tipus.toLowerCase();
         option.textContent = tipus;
         selectTipus.appendChild(option);
     });
+    
 
     console.log(puntInteres);
     renderitzaLlista(puntInteres); 
     contarPunts(puntInteres);
-};
-
-//-------------------------------------------------------------------------------//
-const pintarEspai = function (obj) {
-    const pi = document.createElement("div");
-};
-
-//-------------------------------------------------------------------------------//
-const pintarMuseu = function (obj) {
-};
-
-//-------------------------------------------------------------------------------//
-const pintarAtraccio = function (obj) {
 };
 
 //-------------------------------------------------------------------------------//
@@ -170,7 +213,6 @@ function mostrarLlistat(punts) {
     if (punts.length === 0) {
         llistatDiv.innerHTML = "No hi ha informació a mostrar";
     } else {
-        // Crear la lista de puntos de interés
         llistatDiv.innerHTML = punts.map((punt, index) => {
             let infoPunt = '';
             let color = '';
@@ -182,46 +224,60 @@ function mostrarLlistat(punts) {
                         Tipus: ${punt.tipus}
                     `;
                     color = 'background-color: #7fffd4; border: 1px solid red;';
+                    break;
+
                 case 'atraccio':
                     infoPunt = `
                         <strong>${punt.nom}</strong> | ${punt.ciutat}<br>
                         Tipus: ${punt.tipus}<br>
                         Horaris: ${punt.horaris}<br>
-                        Preu: ${punt.preu} ${punt.moneda}
+                        Preu: ${punt.preu}${punt.moneda}<br>
                     `;
+                    color = 'background-color: #e1ff7f; border: 1px solid red;';
+                    break;
+
                 case 'museu':
                     infoPunt = `
                         <strong>${punt.nom}</strong> | ${punt.ciutat}<br>
                         Tipus: ${punt.tipus}<br>
                         Horaris: ${punt.horaris}<br>
-                        Preu: ${punt.preu} ${punt.moneda}<br>
+                        Preu: ${punt.preu}${punt.moneda}<br>
                         Descripció: ${punt.descripcio}
                     `;
+                    color = 'background-color: #ffd37f; border: 1px solid red;';
+                    break;
             }
 
             return `
+                <div style="${color}">
                     ${infoPunt}
-                    <button onclick="eliminarPunt(${index})">Eliminar</button>
+                </div>
             `;
         }).join('');
     }
 }
 
+//-------------------------------------------------------------------------------//
 function eliminarPunt(index) {
     puntInteres.splice(index, 1);
     mostrarLlistat(puntInteres);
     contarPunts(puntInteres);
 }
 
+//-------------------------------------------------------------------------------//
 netejarButton.addEventListener('click', () => {
     puntInteres = []; 
     mostrarLlistat(puntInteres); 
     console.log("Todos los puntos de interés han sido eliminados.");
+    puntsTotals.innerHTML="Totals: " + 0;
 });
 
+//-------------------------------------------------------------------------------//
 function contarPunts(punts){
     puntsTotals.innerHTML="Totals: " + punts.length;
-    
 }
+
+//-------------------------------------------------------------------------------//
+mostrarPuntsEnMapa(puntInteres);
 contarPunts(puntInteres);
 const mapa = new Map();

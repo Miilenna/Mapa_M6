@@ -2,14 +2,14 @@ class Museu extends PuntInteres {
     horaris;
     preu;
     moneda;
-    desc;
+    descripcio;
 
-    constructor(id, esManual, pais, ciutat, nom, direccio, tipus, latitud, longitud, puntuacio, horaris, preu, moneda, desc) {
+    constructor(id, esManual, pais, ciutat, nom, direccio, tipus, latitud, longitud, puntuacio, horaris, preu, moneda, descripcio) {
         super(id, esManual, pais, ciutat, nom, direccio, tipus, latitud, longitud, puntuacio);
         this.horaris = horaris;
         this.preu = preu;
         this.moneda = moneda;
-        this.desc = desc;
+        this.descripcio = descripcio;
     }
     get preuIva(){
         const IVA_PAISOS = {
