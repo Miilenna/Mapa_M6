@@ -3,47 +3,53 @@ let fitxer = [];
 let puntInteres = [];
 let tipusSelected = new Set([]);
 let numId = 0;
-const selectTipus = document.getElementById('tipus');
 const llistatDiv = document.getElementById('llocs');
 const netejarButton = document.getElementById('netejar');
 const puntsTotals = document.getElementById("numeroTotal");
+const selectTipus = document.getElementById('tipus');
 const selectOrdre = document.getElementById('ordre');
+const filtreNomInput = document.getElementById('filtreNom');
 
-// Event listener para el cambio de tipo
+filtreNomInput.addEventListener('input', function () {
+    const valorFiltre = this.value.trim().toLowerCase(); 
+    const tipusSeleccionat = selectTipus.value; 
+    const ordreSeleccionat = selectOrdre.value; 
+    filtrarPunts(tipusSeleccionat, ordreSeleccionat, valorFiltre); 
+});
 selectTipus.addEventListener('change', function () {
     const tipusSeleccionat = this.value;
-    const ordreSeleccionat = selectOrdre.value; // Obtener el orden actual
+    const ordreSeleccionat = selectOrdre.value; 
     filtrarPunts(tipusSeleccionat, ordreSeleccionat);
 });
-
-// Event listener para el cambio de orden
 selectOrdre.addEventListener('change', function () {
     const ordreSeleccionat = this.value;
     const tipusSeleccionat = document.getElementById('tipus').value;
     filtrarPunts(tipusSeleccionat, ordreSeleccionat);
 });
 
-function filtrarPunts(tipus, ordre) {
+//-------------------------------------------------------------------------------//
+function filtrarPunts(tipus, ordre, valorFiltre = "") {
     let puntsFiltrats;
 
-    // Filtrar puntos por tipo
     if (tipus === "tots") {
         puntsFiltrats = puntInteres;
     } else {
         puntsFiltrats = puntInteres.filter((punt) => punt.tipus.toLowerCase() === tipus);
     }
 
-    // Ordenar puntos según el orden seleccionado
+    if (valorFiltre !== "") {
+        puntsFiltrats = puntsFiltrats.filter((punt) =>
+            punt.nom.toLowerCase().includes(valorFiltre)
+        );
+    }
     const puntsOrdenats = ordenarPunts(puntsFiltrats, ordre);
-
-    // Limpiar el mapa y mostrar los puntos ordenados
     mapa.netejarMapa();
     mostrarLlistat(puntsOrdenats);
     contarPunts(puntsOrdenats);
     mostrarPuntsEnMapa(puntsOrdenats);
 }
 
-// Función para ordenar los puntos según el orden seleccionado
+//-------------------------------------------------------------------------------//
 function ordenarPunts(punts, ordre) {
     if (ordre === "ascendent") {
         return punts.slice().sort((a, b) => a.nom.localeCompare(b.nom));
