@@ -37,19 +37,28 @@ class Map{
         this.#currentLong = lon;
     }
 
+    netejarMapa() {
+        for (const id in this.#markers) {
+            this.#map.removeLayer(this.#markers[id]);
+        }
+        this.#markers = {}; 
+    }
 
-    mostrarPunt(lat,long,desc=""){
+    mostrarPunt(lat, long, desc = "") {
+        const markerId = `${lat}-${long}`; 
         const marker = L.marker([lat, long]).addTo(this.#map);
+
         if (desc) {
             marker.bindPopup(desc).openPopup();
         }
-       
+
+        this.#markers[markerId] = marker;
     }
 
     borrarPunt(id) {
         if (this.#markers[id]) {
-            this.#map.removeLayer(this.#markers[id]); // Elimina el marcador específico
-            delete this.#markers[id]; // Elimina del diccionario
+            this.#map.removeLayer(this.#markers[id]); 
+            delete this.#markers[id]; 
         }
     }
 

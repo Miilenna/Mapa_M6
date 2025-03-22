@@ -7,7 +7,52 @@ const selectTipus = document.getElementById('tipus');
 const llistatDiv = document.getElementById('llocs');
 const netejarButton = document.getElementById('netejar');
 const puntsTotals = document.getElementById("numeroTotal");
+const selectOrdre = document.getElementById('ordre');
 
+// Event listener para el cambio de tipo
+selectTipus.addEventListener('change', function () {
+    const tipusSeleccionat = this.value;
+    const ordreSeleccionat = selectOrdre.value; // Obtener el orden actual
+    filtrarPunts(tipusSeleccionat, ordreSeleccionat);
+});
+
+// Event listener para el cambio de orden
+selectOrdre.addEventListener('change', function () {
+    const ordreSeleccionat = this.value;
+    const tipusSeleccionat = document.getElementById('tipus').value;
+    filtrarPunts(tipusSeleccionat, ordreSeleccionat);
+});
+
+function filtrarPunts(tipus, ordre) {
+    let puntsFiltrats;
+
+    // Filtrar puntos por tipo
+    if (tipus === "tots") {
+        puntsFiltrats = puntInteres;
+    } else {
+        puntsFiltrats = puntInteres.filter((punt) => punt.tipus.toLowerCase() === tipus);
+    }
+
+    // Ordenar puntos según el orden seleccionado
+    const puntsOrdenats = ordenarPunts(puntsFiltrats, ordre);
+
+    // Limpiar el mapa y mostrar los puntos ordenados
+    mapa.netejarMapa();
+    mostrarLlistat(puntsOrdenats);
+    contarPunts(puntsOrdenats);
+    mostrarPuntsEnMapa(puntsOrdenats);
+}
+
+// Función para ordenar los puntos según el orden seleccionado
+function ordenarPunts(punts, ordre) {
+    if (ordre === "ascendent") {
+        return punts.slice().sort((a, b) => a.nom.localeCompare(b.nom));
+    } else if (ordre === "descendent") {
+        return punts.slice().sort((a, b) => b.nom.localeCompare(a.nom));
+    } else {
+        return punts;
+    }
+}
 
 //-------------------------------------------------------------------------------//
 dropZoneObj.addEventListener("dragover", function (event) {
@@ -56,6 +101,23 @@ const readCsv = function (file) {
         console.log("El fitxer ha començat a carregar-se");
     });
 };
+
+//-------------------------------------------------------------------------------//
+function filtrarPuntsPerTipus(tipus) {
+    let puntsFiltrats;
+
+    if (tipus === "tots") {
+        puntsFiltrats = puntInteres;
+    } else {
+        puntsFiltrats = puntInteres.filter((punt) => punt.tipus.toLowerCase() === tipus);
+    }
+
+    mapa.netejarMapa();
+
+    mostrarLlistat(puntsFiltrats);
+    contarPunts(puntsFiltrats);
+    mostrarPuntsEnMapa(puntsFiltrats); 
+}
 
 //-------------------------------------------------------------------------------//
 function mostrarPuntsEnMapa(punts) {
@@ -300,6 +362,9 @@ function contarPunts(punts){
 }
 
 //-------------------------------------------------------------------------------//
+
+
+
 mostrarPuntsEnMapa(puntInteres);
 contarPunts(puntInteres);
 const mapa = new Map();
