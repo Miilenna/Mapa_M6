@@ -148,59 +148,19 @@ const loadData = function (fitxer) {
         switch (tipus) {
             case "espai":
                 console.log("Instancia objecte PuntInteres");
-                const espaiObj = new PuntInteres(
-                    numId, 
-                    false, 
-                    dades[PAIS], 
-                    dades[CIUTAT], 
-                    dades[NOM], 
-                    dades[DIRECCIO], 
-                    dades[TIPUS], 
-                    dades[LAT], 
-                    dades[LON], 
-                    dades[PUNTUACIO]  
-                );
+                const espaiObj = new PuntInteres(numId, false, dades[PAIS], dades[CIUTAT], dades[NOM], dades[DIRECCIO], dades[TIPUS], dades[LAT], dades[LON], dades[PUNTUACIO]);
                 puntInteres.push(espaiObj);
                 break;
 
             case "museu":
                 console.log("Instancia objecte Museu");
-                const museuObj = new Museu(
-                    numId, 
-                    false, 
-                    dades[PAIS], 
-                    dades[CIUTAT], 
-                    dades[NOM], 
-                    dades[DIRECCIO], 
-                    dades[TIPUS], 
-                    dades[LAT], 
-                    dades[LON], 
-                    dades[PUNTUACIO], 
-                    dades[HORARIS], 
-                    dades[PREU], 
-                    dades[MONEDA], 
-                    dades[DESCRIPCIO]
-                );
+                const museuObj = new Museu(numId, false, dades[PAIS], dades[CIUTAT], dades[NOM], dades[DIRECCIO], dades[TIPUS], dades[LAT], dades[LON], dades[PUNTUACIO], dades[HORARIS], dades[PREU], dades[MONEDA], dades[DESCRIPCIO]);
                 puntInteres.push(museuObj);
                 break;
 
             case "atraccio":
                 console.log("Instancia objecte Atraccio");
-                const atraccioObj = new Atraccio(
-                    numId, 
-                    false, 
-                    dades[PAIS], 
-                    dades[CIUTAT], 
-                    dades[NOM], 
-                    dades[DIRECCIO], 
-                    dades[TIPUS], 
-                    dades[LAT], 
-                    dades[LON], 
-                    dades[PUNTUACIO], 
-                    dades[HORARIS], 
-                    dades[PREU], 
-                    dades[MONEDA]
-                );
+                const atraccioObj = new Atraccio(numId, false, dades[PAIS], dades[CIUTAT], dades[NOM], dades[DIRECCIO], dades[TIPUS], dades[LAT], dades[LON], dades[PUNTUACIO], dades[HORARIS], dades[PREU], dades[MONEDA]);
                 puntInteres.push(atraccioObj);
                 break;
 
@@ -236,7 +196,7 @@ const renderitzaLlista = function (llista) {
                 if (typeof pintarEspai === "function") {
                     pintarEspai(obj);
                 } else {
-                    console.error("Error: La función pintarEspai no está definida.");
+                    console.log("Error: La función pintarEspai no está definida.");
                 }
                 break;
 
@@ -244,19 +204,20 @@ const renderitzaLlista = function (llista) {
                 if (typeof pintarMuseu === "function") {
                     pintarMuseu(obj);
                 } else {
-                    console.error("Error: La función pintarMuseu no está definida.");
+                    console.log("Error: La función pintarMuseu no está definida.");
                 }
                 break;
+
             case "atraccio":
                 if (typeof pintarAtraccio === "function") {
                     pintarAtraccio(obj);
                 } else {
-                    console.error("Error: La función pintarAtraccio no está definida.");
+                    console.log("Error: La función pintarAtraccio no está definida.");
                 }
                 break;
 
             default:
-                console.error("Error: Has afegit un tipus que no és correcte", obj);
+                console.log("Error: Has afegit un tipus que no és correcte", obj);
                 throw new Error("Has afegit un tipus que no és correcte");
         }
     });
@@ -352,13 +313,11 @@ function eliminarPunt(id) {
     contarPunts(puntInteres);
 }
 
-
 //-------------------------------------------------------------------------------//
 netejarButton.addEventListener('click', () => {
     puntInteres = []; 
     console.log(puntInteres);
     mostrarLlistat(puntInteres); 
-    console.log("Todos los puntos de interés han sido eliminados.");
     puntsTotals.innerHTML="Totals: " + 0;
 });
 
@@ -369,8 +328,7 @@ function contarPunts(punts){
 
 //-------------------------------------------------------------------------------//
 
-
-
 mostrarPuntsEnMapa(puntInteres);
 contarPunts(puntInteres);
 const mapa = new Map();
+const excel = new Excel();
