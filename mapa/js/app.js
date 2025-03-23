@@ -318,12 +318,12 @@ netejarButton.addEventListener('click', () => {
     puntInteres = []; 
     console.log(puntInteres);
     mostrarLlistat(puntInteres); 
-    puntsTotals.innerHTML="Totals: " + 0;
+    puntsTotals.innerHTML="Número total: " + 0;
 });
 
 //-------------------------------------------------------------------------------//
 function contarPunts(punts){
-    puntsTotals.innerHTML="Totals: " + punts.length;
+    puntsTotals.innerHTML="Número total: " + punts.length;
 }
 
 //-------------------------------------------------------------------------------//
