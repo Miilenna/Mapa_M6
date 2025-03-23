@@ -1,17 +1,28 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e0e0e0;
+}
+
 .main-container {
     display: flex;
-    flex-direction: row; 
-    height: 50vh; 
+    flex-direction: row;
+    height: 100vh;
 }
 
-/* Contenidor del menú */
+/* Contenedor del menú */
 .menu-main {
-    width: 30%; 
+    width: 30%;
     padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 30px;
-
+    background-color: #c0c3c3;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Añade scroll vertical si el contenido es demasiado largo */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
 }
+
 .tot {
     display: flex;
     flex-direction: column;
@@ -19,14 +30,49 @@
     align-items: center;
 }
 
-/* Contenidor del mapa */
+/* Contenedor para "Ordenació", "Tipus" y "Filtrar per nom" */
+.filtres-nom-container {
+    background-color: #efbcbc; /* Color de fondo */
+    width: 80%;
+    padding-left: 150px;
+    padding-right: 150px;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    border-radius: 10px;
+}
+
+/* Contenedor para "Ordenació" y "Tipus" (uno al lado del otro) */
+.filtres-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px; /* Espacio entre "Ordenació" y "Tipus" */
+}
+
+/* Estilos para los selectores dentro de "Ordenació" y "Tipus" */
+.filtres-container select {
+    width: 100%; /* Ajusta el ancho para que quepan ambos selectores */
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Estilos para el input "Filtrar per nom" */
+.filtres-nom-container input {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    padding: 5px;
+    margin-top: 10px; /* Espacio entre los filtros y el input */
+    border: 1px solid #ccc;
+}
+
+/* Contenedor del mapa */
 #map {
     width: 70%;
     height: 100vh;
-    border-radius: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* DropZone pels fitxers */
+/* DropZone para los archivos */
 .dropZone {
     width: 80%;
     height: 100px;
@@ -38,10 +84,69 @@
     cursor: pointer;
     margin-top: 20px;
     padding: 10px;
-
+    border-radius: 10px;
 }
 
-.banderaCiutat{
-    justify-content: left;
+.dropZone:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilos para la lista de lugares */
+.llistat_llocs {
+    width: 80%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f3dfdf;
+    border-radius: 10px;
+    box-shadow: 0 0 1px black;
+    height: 500px;
+    overflow-y: auto; /* Añade scroll vertical si la lista es demasiado larga */
+}
+
+.llistat_llocs div {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Estilos para los botones */
+button {
+    width: auto; /* Ancho automático para que no ocupe todo el espacio */
+    padding: 10px 20px; /* Ajusta el padding para que se vea mejor */
+    margin: 0; /* Elimina el margen para alinearlo mejor */
+    border: none;
+    border-radius: 5px;
+    background-color: #f8746b;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff806e;
+}
+
+/* Estilos para la bandera y la ciudad */
+.banderaCiutat {
     display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.banderaCiutat img {
+    margin-right: 10px;
+}
+
+/* Contenedor para "Total" y "Netejar" */
+.total-netejar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin-top: 20px;
+}
+
+/* Estilo para el texto "Total" */
+#numeroTotal {
+    font-weight: bold;
+    margin: 0; /* Elimina el margen para alinearlo mejor */
 }
